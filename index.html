@@ -26,6 +26,9 @@
         document.body.addEventListener("dragenter", onDrag);
         document.body.addEventListener("dragover", onDrag);
         document.body.addEventListener("drop", onDrop);
+
+        const fileInput = document.getElementById("file-input");
+        fileInput.addEventListener("change", onFileChange);
       };
 
       const onDrag = (e) => {
@@ -39,7 +42,18 @@
         e.preventDefault();
         e.stopPropagation();
 
-        for (const origFile of e.dataTransfer.files) {
+        await handleFiles(e.dataTransfer.files);
+      };
+
+      const onFileChange = async (e) => {
+        await handleFiles(e.target.files);
+
+        // Reset so the same file can be selected twice in a row.
+        e.target.value = "";
+      };
+
+      const handleFiles = async (files) => {
+        for (const origFile of files) {
           const image = await fileToImage(origFile);
 
           const canvas = imageToCanvas(image);
@@ -100,6 +114,6 @@
     </script>
   </head>
   <body>
-    <p>Drop any file here.</p>
+    <input id="file-input" type="file" accept="image/*" multiple />
   </body>
 </html>
