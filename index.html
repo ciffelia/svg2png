@@ -58,7 +58,7 @@
 
           const canvas = imageToCanvas(image);
 
-          const blob = await canvasToBlob(canvas);
+          const blob = await canvas.toBlob();
 
           const origFileName = origFile.name;
           const convertedFileName =
@@ -92,15 +92,6 @@
 
         return canvas;
       };
-
-      const canvasToBlob = (canvas, mimeType, qualityArgument) =>
-        new Promise((resolve, reject) => {
-          try {
-            canvas.toBlob(resolve, mimeType, qualityArgument);
-          } catch (e) {
-            reject(e);
-          }
-        });
 
       const downloadBlob = (blob, fileName) => {
         const a = document.createElement("a");
