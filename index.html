@@ -58,7 +58,9 @@
 
           const canvas = imageToCanvas(image);
 
-          const blob = await canvas.toBlob();
+          const blob = await new Promise((resolve) => {
+            canvas.toBlob(resolve);
+          });
 
           const origFileName = origFile.name;
           const convertedFileName =
